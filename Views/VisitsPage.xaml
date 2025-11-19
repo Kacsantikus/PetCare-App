@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="test.Views.VisitsPage"
+    x:Name="VisitsPageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="16">
+
+        <!-- Fejléc: melyik állat vizitei -->
+        <VerticalStackLayout Spacing="4" Grid.Row="0">
+            <Label
+                Text="{Binding PetName, StringFormat='Állatorvosi vizitek - {0}'}"
+                FontSize="20"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="{Binding PetId, StringFormat='Állat ID: {0}'}"
+                FontSize="12" />
+        </VerticalStackLayout>
+
+        <!-- Form + lista (VerticalStack a második sorban) -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="12">
+
+                <!-- Űrlap -->
+                <Frame Padding="10" BorderColor="#cccccc">
+                    <VerticalStackLayout Spacing="8">
+
+                        <!-- Vizsgálat dátuma -->
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Vizsgálat dátuma" FontSize="12" />
+                            <DatePicker
+                                Date="{Binding VisitDate}"
+                                Format="yyyy.MM.dd" />
+                        </VerticalStackLayout>
+
+                        <Entry
+                            Placeholder="Vizsgálat oka"
+                            Text="{Binding Reason}" />
+
+                        <Editor
+                            Placeholder="Leírás"
+                            HeightRequest="80"
+                            Text="{Binding Description}" />
+
+                        <Entry
+                            Placeholder="Gyógyszer / kezelés"
+                            Text="{Binding Medication}" />
+
+                        <!-- Következő kontroll -->
+                        <VerticalStackLayout Spacing="4">
+
+                            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                                <CheckBox
+                                    IsChecked="{Binding HasNextCheck}" />
+                                <Label Text="Következő kontroll dátuma" />
+                            </HorizontalStackLayout>
+
+                            <DatePicker
+                                Date="{Binding NextCheck}"
+                                Format="yyyy.MM.dd"
+                                IsEnabled="{Binding HasNextCheck}" />
+                        </VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="8">
+                            <Button
+                                Text="Mentés"
+                                Clicked="OnSaveClicked" />
+
+                            <Button
+                                Text="Betöltés"
+                                Clicked="OnLoadClicked" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+
+                <!-- Vizitek listája -->
+                <CollectionView
+                    ItemsSource="{Binding Visits}"
+                    SelectionMode="None">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Margin="0,0,0,8" Padding="8">
+                                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Text="{Binding VisitDate, StringFormat='Dátum: {0:yyyy.MM.dd}'}"
+                                        FontAttributes="Bold" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Text="{Binding Reason}"
+                                        FontSize="13" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Text="{Binding Medication, StringFormat='Gyógyszer: {0}'}"
+                                        FontSize="12" />
+
+                                    <Button
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Text="Szerk."
+                                        Clicked="OnEditClicked" />
+
+                                    <Button
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Text="Törlés"
+                                        Clicked="OnDeleteClicked" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

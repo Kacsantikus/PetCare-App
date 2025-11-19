@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="test.Views.PetsPage"
+    x:Name="PetsPageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="16">
+
+        <!-- Űrlap felül -->
+        <VerticalStackLayout Grid.Row="0" Spacing="8">
+            <Entry
+                Placeholder="Név"
+                Text="{Binding Name}" />
+
+            <Entry
+                Placeholder="Faj / típus"
+                Text="{Binding Species}" />
+
+            <DatePicker
+                Date="{Binding BirthDate}" />
+
+            <Editor
+                Placeholder="Megjegyzés"
+                HeightRequest="80"
+                Text="{Binding Notes}" />
+
+            <HorizontalStackLayout Spacing="8">
+                <Button
+                    Text="Mentés"
+                    Clicked="OnSaveClicked" />
+
+                <Button
+                    Text="Betöltés"
+                    Clicked="OnLoadClicked" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Lista alul -->
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding Pets}"
+            SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,0,0,8" Padding="8">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                <Label Text="{Binding Species}" FontSize="12" />
+                            </VerticalStackLayout>
+
+                            <Button
+                    Grid.Column="1"
+                    Text="Szerk."
+                    Clicked="OnEditClicked" />
+
+                            <Button
+                    Grid.Column="2"
+                    Text="Törlés"
+                    Clicked="OnDeleteClicked" />
+
+                            <Button
+                    Grid.Column="3"
+                    Text="Vizitek"
+                    Clicked="OnVisitsClicked" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+    </Grid>
+</ContentPage>
