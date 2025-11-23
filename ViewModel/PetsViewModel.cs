@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using test.Data;
 using test.Models;
 
@@ -28,32 +27,30 @@ public partial class PetsViewModel : ObservableObject
     [ObservableProperty]
     private string? notes;
 
+    [ObservableProperty]
+    private string? photoPath;
+
     public PetsViewModel(AppDatabase db)
     {
         _db = db;
     }
 
-    [RelayCommand]
     public async Task LoadAsync()
     {
         var list = await _db.GetPetsAsync();
         Pets = new ObservableCollection<Pet>(list);
     }
 
-    [RelayCommand]
     public async Task SaveAsync()
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            await Shell.Current.DisplayAlert(
-                "Hiányzó adat",
-                "A név megadása kötelező.",
-                "OK");
-
+            await Shell.Current.DisplayAlert("Hiba", "A név megadása kötelező.", "OK");
             return;
         }
 
         Pet pet;
+
         if (SelectedPet == null)
         {
             pet = new Pet
@@ -61,7 +58,8 @@ public partial class PetsViewModel : ObservableObject
                 Name = Name,
                 Species = Species,
                 BirthDate = BirthDate,
-                Notes = Notes
+                Notes = Notes,
+                PhotoPath = PhotoPath
             };
         }
         else
@@ -71,6 +69,7 @@ public partial class PetsViewModel : ObservableObject
             pet.Species = Species;
             pet.BirthDate = BirthDate;
             pet.Notes = Notes;
+            pet.PhotoPath = PhotoPath;
         }
 
         await _db.SavePetAsync(pet);
@@ -78,14 +77,12 @@ public partial class PetsViewModel : ObservableObject
         ClearForm();
     }
 
-    [RelayCommand]
     public async Task DeleteAsync(Pet pet)
     {
         await _db.DeletePetAsync(pet);
         await LoadAsync();
     }
 
-    [RelayCommand]
     public void Edit(Pet pet)
     {
         SelectedPet = pet;
@@ -93,6 +90,7 @@ public partial class PetsViewModel : ObservableObject
         Species = pet.Species;
         BirthDate = pet.BirthDate;
         Notes = pet.Notes;
+        PhotoPath = pet.PhotoPath;
     }
 
     private void ClearForm()
@@ -102,5 +100,6 @@ public partial class PetsViewModel : ObservableObject
         Species = string.Empty;
         BirthDate = DateTime.Today;
         Notes = string.Empty;
+        PhotoPath = null;
     }
 }

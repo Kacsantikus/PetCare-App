@@ -5,38 +5,80 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="16">
+    <Grid
+        Padding="16"
+        RowSpacing="16"
+        RowDefinitions="Auto,*">
 
-        <!-- Űrlap felül -->
-        <VerticalStackLayout Grid.Row="0" Spacing="8">
-            <Entry
-                Placeholder="Név"
-                Text="{Binding Name}" />
+        <!-- FEJLÉC + ŰRLAP -->
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
 
-            <Entry
-                Placeholder="Faj / típus"
-                Text="{Binding Species}" />
+            <!-- Cím -->
+            <Label
+                Text="Állataim"
+                FontSize="24"
+                FontAttributes="Bold" />
 
-            <DatePicker
-                Date="{Binding BirthDate}" />
+            <!-- Űrlap egy kártyában -->
+            <Frame
+                HasShadow="True"
+                CornerRadius="12"
+                Padding="12"
+                Margin="0,4,0,0">
 
-            <Editor
-                Placeholder="Megjegyzés"
-                HeightRequest="80"
-                Text="{Binding Notes}" />
+                <VerticalStackLayout Spacing="8">
 
-            <HorizontalStackLayout Spacing="8">
-                <Button
-                    Text="Mentés"
-                    Clicked="OnSaveClicked" />
+                    <Entry
+                        Placeholder="Név"
+                        Text="{Binding Name}" />
 
-                <Button
-                    Text="Betöltés"
-                    Clicked="OnLoadClicked" />
-            </HorizontalStackLayout>
+                    <Entry
+                        Placeholder="Faj / típus"
+                        Text="{Binding Species}" />
+
+                    <DatePicker
+                        Date="{Binding BirthDate}" />
+
+                    <!-- Kép + fotó gomb -->
+                    <HorizontalStackLayout Spacing="8">
+
+                        <Frame
+                            WidthRequest="120"
+                            HeightRequest="120"
+                            Padding="0"
+                            HasShadow="True"
+                            CornerRadius="12">
+
+                            <Image
+                                Source="{Binding PhotoPath}"
+                                Aspect="AspectFill" />
+                        </Frame>
+
+                        <Button
+                            Text="📷 Fotó hozzáadása"
+                            Clicked="OnPickPhotoClicked" />
+                    </HorizontalStackLayout>
+
+                    <Editor
+                        Placeholder="Megjegyzés"
+                        HeightRequest="80"
+                        Text="{Binding Notes}" />
+
+                    <HorizontalStackLayout Spacing="8">
+                        <Button
+                            Text="Mentés"
+                            Clicked="OnSaveClicked" />
+
+                        <Button
+                            Text="Betöltés"
+                            Clicked="OnLoadClicked" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
         </VerticalStackLayout>
 
-        <!-- Lista alul -->
+        <!-- LISTA ALUL -->
         <CollectionView
             Grid.Row="1"
             ItemsSource="{Binding Pets}"
@@ -44,32 +86,46 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Margin="0,0,0,8" Padding="8">
-                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Name}" FontAttributes="Bold" />
-                                <Label Text="{Binding Species}" FontSize="12" />
+                    <Frame
+                        Margin="0,0,0,8"
+                        Padding="10"
+                        CornerRadius="12"
+                        HasShadow="True">
+
+                        <Grid
+                            ColumnDefinitions="*,Auto,Auto,Auto"
+                            ColumnSpacing="8">
+
+                            <VerticalStackLayout Spacing="2">
+                                <Label
+                                    Text="{Binding Name}"
+                                    FontAttributes="Bold"
+                                    FontSize="16" />
+                                <Label
+                                    Text="{Binding Species}"
+                                    FontSize="12"
+                                    TextColor="Gray" />
                             </VerticalStackLayout>
 
                             <Button
-                    Grid.Column="1"
-                    Text="Szerk."
-                    Clicked="OnEditClicked" />
+                                Grid.Column="1"
+                                Text="Szerk."
+                                Clicked="OnEditClicked" />
 
                             <Button
-                    Grid.Column="2"
-                    Text="Törlés"
-                    Clicked="OnDeleteClicked" />
+                                Grid.Column="2"
+                                Text="Törlés"
+                                Clicked="OnDeleteClicked" />
 
                             <Button
-                    Grid.Column="3"
-                    Text="Vizitek"
-                    Clicked="OnVisitsClicked" />
+                                Grid.Column="3"
+                                Text="Vizitek"
+                                Clicked="OnVisitsClicked" />
                         </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
         </CollectionView>
+
     </Grid>
 </ContentPage>

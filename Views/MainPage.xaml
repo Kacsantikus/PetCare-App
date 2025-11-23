@@ -4,10 +4,65 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <VerticalStackLayout Padding="16">
-        <Label
-            Text="PetCare – Főoldal"
-            FontSize="24"
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="16"
+            Spacing="16">
+
+            <Label
+                Text="PetCare áttekintő"
+                FontSize="24"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="Gyors statisztikák az alkalmazásról"
+                FontSize="14"
+                TextColor="Gray" />
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                <Frame HasShadow="True" CornerRadius="12" Padding="10">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="Állatok" FontSize="14" />
+                        <Label
+                            Text="{Binding TotalPets}"
+                            FontSize="24"
+                            FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="1" HasShadow="True" CornerRadius="12" Padding="10">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="Vizitek" FontSize="14" />
+                        <Label
+                            Text="{Binding TotalVisits}"
+                            FontSize="24"
+                            FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="2" HasShadow="True" CornerRadius="12" Padding="10">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="Rendelők" FontSize="14" />
+                        <Label
+                            Text="{Binding TotalClinics}"
+                            FontSize="24"
+                            FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12">
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        Text="Közelgő kontroll"
+                        FontSize="16"
+                        FontAttributes="Bold" />
+                    <Label
+                        Text="{Binding UpcomingVisitText}"
+                        FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

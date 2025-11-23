@@ -1,5 +1,9 @@
+using Microsoft.Maui.Media;
+using Microsoft.Maui.Storage;
+using System.IO;
 using test.Models;
 using test.ViewModel;
+
 
 namespace test.Views;
 
@@ -63,4 +67,38 @@ public partial class PetsPage : ContentPage
             await Shell.Current.GoToAsync(nameof(VisitsPage), parameters);
         }
     }
+
+    private async void OnPickPhotoClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            var result = await FilePicker.Default.PickAsync(new PickOptions
+            {
+                PickerTitle = "Válassz egy képet a háziállathoz",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            // Ha a user bezárta a párbeszédablakot
+            if (result == null)
+                return;
+
+            // Másolat az app saját mappájába
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(result.FileName)}";
+            var localPath = Path.Combine(FileSystem.AppDataDirectory, fileName);
+
+            await using (var sourceStream = await result.OpenReadAsync())
+            await using (var destStream = File.OpenWrite(localPath))
+            {
+                await sourceStream.CopyToAsync(destStream);
+            }
+
+            // ViewModel frissítése
+            _viewModel.PhotoPath = localPath;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Hiba", $"Nem sikerült fotót hozzáadni: {ex.Message}", "OK");
+        }
+    }
+
 }

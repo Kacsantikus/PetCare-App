@@ -102,5 +102,27 @@ namespace test.Data
             await EnsureInitializedAsync();
             return await _connection.DeleteAsync(clinic);
         }
+
+        // ---- Statisztikához segéd metódusok ----
+
+        public async Task<List<VetVisit>> GetAllVisitsAsync()
+        {
+            await EnsureInitializedAsync();
+            return await _connection.Table<VetVisit>()
+                                    .ToListAsync();
+        }
+
+        public async Task<VetVisit?> GetNextUpcomingVisitAsync()
+        {
+            await EnsureInitializedAsync();
+
+            var today = DateTime.Today;
+
+            return await _connection.Table<VetVisit>()
+                                    .Where(v => v.NextCheck != null && v.NextCheck > today)
+                                    .OrderBy(v => v.NextCheck)
+                                    .FirstOrDefaultAsync();
+        }
+
     }
 }

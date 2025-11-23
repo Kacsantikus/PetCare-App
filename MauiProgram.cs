@@ -26,10 +26,15 @@ public static class MauiProgram
         builder.Services.AddSingleton(new AppDatabase(dbPath));
 
         // ViewModel + Page
+        builder.Services.AddSingleton<DashboardViewModel>();
+        builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<PetsViewModel>();
         builder.Services.AddSingleton<PetsPage>();
         builder.Services.AddTransient<VisitsViewModel>();
         builder.Services.AddTransient<VisitsPage>();
+        builder.Services.AddSingleton<ClinicsViewModel>();
+        builder.Services.AddSingleton<ClinicsPage>();
+
 
 
         return builder.Build();

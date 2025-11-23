@@ -13,5 +13,10 @@
         <ShellContent
             Title="Állataim"
             ContentTemplate="{DataTemplate views:PetsPage}" />
+
+        <ShellContent
+            Title="Rendelők"
+            ContentTemplate="{DataTemplate views:ClinicsPage}" />
     </TabBar>
 </Shell>
+

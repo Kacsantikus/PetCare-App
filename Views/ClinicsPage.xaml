@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="test.Views.ClinicsPage"
+    x:Name="ClinicsPageRoot"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="16">
+
+        <!-- Form felül -->
+        <Frame Grid.Row="0" Padding="10" BorderColor="#cccccc">
+            <VerticalStackLayout Spacing="8">
+
+                <Entry
+                    Placeholder="Rendelő neve"
+                    Text="{Binding Name}" />
+
+                <Entry
+    Placeholder="Pl.: Budapest, Kossuth Lajos utca 1, Magyarország"
+    Text="{Binding Address}" />
+
+                <Entry
+                    Placeholder="Telefonszám"
+                    Keyboard="Telephone"
+                    Text="{Binding Phone}" />
+
+                <HorizontalStackLayout Spacing="8">
+                    <Button
+                        Text="Mentés"
+                        Clicked="OnSaveClicked" />
+
+                    <Button
+                        Text="Betöltés"
+                        Clicked="OnLoadClicked" />
+
+                    <Button
+                        Text="Térképen megjelenítés"
+                        Clicked="OnShowMapClicked" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Beépített kis térkép -->
+        <Frame Grid.Row="1" Padding="0" BorderColor="#cccccc" HeightRequest="200">
+            <WebView
+                x:Name="ClinicMap"
+                Source="https://www.google.com/maps"
+                HeightRequest="200" />
+        </Frame>
+
+        <!-- Lista alul -->
+        <CollectionView
+            Grid.Row="2"
+            ItemsSource="{Binding Clinics}"
+            SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,0,0,8" Padding="8">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout>
+                                <Label
+                                    Text="{Binding Name}"
+                                    FontAttributes="Bold" />
+                                <Label
+                                    Text="{Binding Address}"
+                                    FontSize="12" />
+                                <Label
+                                    Text="{Binding Phone}"
+                                    FontSize="12" />
+                            </VerticalStackLayout>
+
+                            <Button
+                                Grid.Column="1"
+                                Text="Szerk."
+                                Clicked="OnEditClicked" />
+
+                            <Button
+                                Grid.Column="2"
+                                Text="Törlés"
+                                Clicked="OnDeleteClicked" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
