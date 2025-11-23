@@ -69,10 +69,32 @@ public partial class VisitsViewModel : ObservableObject
             return;
         }
 
+
         if (string.IsNullOrWhiteSpace(Reason))
         {
-            await Shell.Current.DisplayAlert("Hiba", "Az ok megadása kötelező.", "OK");
+            await Shell.Current.DisplayAlert("Hiba", "A vizsgálat oka kötelező.", "OK");
             return;
+        }
+
+        if (VisitDate > DateTime.Today.AddDays(1))
+        {
+            await Shell.Current.DisplayAlert("Hiba", "A vizsgálat dátuma nem lehet túl messze a jövőben.", "OK");
+            return;
+        }
+
+        if (HasNextCheck) // vagy ahogy a checkboxhoz kötött bool property-t hívod
+        {
+            if (NextCheck == null)
+            {
+                await Shell.Current.DisplayAlert("Hiba", "Ha kontrollt jelölsz, a kontroll dátuma is kötelező.", "OK");
+                return;
+            }
+
+            if (NextCheck <= VisitDate)
+            {
+                await Shell.Current.DisplayAlert("Hiba", "A kontroll dátuma a vizsgálat után kell legyen.", "OK");
+                return;
+            }
         }
 
         VetVisit visit;
@@ -101,11 +123,21 @@ public partial class VisitsViewModel : ObservableObject
         ClearForm();
     }
 
-    public async Task DeleteAsync(VetVisit visit)
+    public async Task DeleteAsync(Pet pet)
     {
-        await _db.DeleteVisitAsync(visit);
+        var confirm = await Shell.Current.DisplayAlert(
+            "Törlés",
+            $"Biztosan törlöd ezt az állatot? ({pet.Name})",
+            "Igen",
+            "Mégse");
+
+        if (!confirm)
+            return;
+
+        await _db.DeletePetAsync(pet);
         await LoadAsync();
     }
+
 
     public void Edit(VetVisit visit)
     {

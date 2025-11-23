@@ -35,6 +35,7 @@ public partial class PetsViewModel : ObservableObject
         _db = db;
     }
 
+
     public async Task LoadAsync()
     {
         var list = await _db.GetPetsAsync();
@@ -46,6 +47,11 @@ public partial class PetsViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(Name))
         {
             await Shell.Current.DisplayAlert("Hiba", "A név megadása kötelező.", "OK");
+            return;
+        }
+        if (BirthDate > DateTime.Today)
+        {
+            await Shell.Current.DisplayAlert("Hiba", "A születési dátum nem lehet a jövőben.", "OK");
             return;
         }
 
@@ -79,9 +85,19 @@ public partial class PetsViewModel : ObservableObject
 
     public async Task DeleteAsync(Pet pet)
     {
+        var confirm = await Shell.Current.DisplayAlert(
+            "Törlés",
+            $"Biztosan törlöd ezt az állatot? ({pet.Name})",
+            "Igen",
+            "Mégse");
+
+        if (!confirm)
+            return;
+
         await _db.DeletePetAsync(pet);
         await LoadAsync();
     }
+
 
     public void Edit(Pet pet)
     {

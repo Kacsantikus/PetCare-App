@@ -42,6 +42,18 @@ public partial class ClinicsViewModel : ObservableObject
             await Shell.Current.DisplayAlert("Hiba", "A rendelő neve kötelező.", "OK");
             return;
         }
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            await Shell.Current.DisplayAlert("Hiba", "A rendelő neve kötelező.", "OK");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Address))
+        {
+            await Shell.Current.DisplayAlert("Hiba", "A rendelő címe kötelező.", "OK");
+            return;
+        }
+
 
         VetClinic clinic;
 
@@ -67,11 +79,21 @@ public partial class ClinicsViewModel : ObservableObject
         ClearForm();
     }
 
-    public async Task DeleteAsync(VetClinic clinic)
+    public async Task DeleteAsync(Pet pet)
     {
-        await _db.DeleteClinicAsync(clinic);
+        var confirm = await Shell.Current.DisplayAlert(
+            "Törlés",
+            $"Biztosan törlöd ezt az állatot? ({pet.Name})",
+            "Igen",
+            "Mégse");
+
+        if (!confirm)
+            return;
+
+        await _db.DeletePetAsync(pet);
         await LoadAsync();
     }
+
 
     public void Edit(VetClinic clinic)
     {
