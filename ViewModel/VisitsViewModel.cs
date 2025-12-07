@@ -123,18 +123,18 @@ public partial class VisitsViewModel : ObservableObject
         ClearForm();
     }
 
-    public async Task DeleteAsync(Pet pet)
+    public async Task DeleteAsync(VetVisit visit)
     {
         var confirm = await Shell.Current.DisplayAlert(
             "Törlés",
-            $"Biztosan törlöd ezt az állatot? ({pet.Name})",
+            $"Biztosan törlöd ezt a vizitet?",
             "Igen",
             "Mégse");
 
         if (!confirm)
             return;
 
-        await _db.DeletePetAsync(pet);
+        await _db.DeleteVisitAsync(visit);
         await LoadAsync();
     }
 

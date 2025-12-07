@@ -79,18 +79,18 @@ public partial class ClinicsViewModel : ObservableObject
         ClearForm();
     }
 
-    public async Task DeleteAsync(Pet pet)
+    public async Task DeleteAsync(VetClinic clinic)
     {
         var confirm = await Shell.Current.DisplayAlert(
             "Törlés",
-            $"Biztosan törlöd ezt az állatot? ({pet.Name})",
+            $"Biztosan törlöd ezt a rendelőt? ({clinic.Name})",
             "Igen",
             "Mégse");
 
         if (!confirm)
             return;
 
-        await _db.DeletePetAsync(pet);
+        await _db.DeleteClinicAsync(clinic);
         await LoadAsync();
     }
 
